@@ -4,5 +4,6 @@
 
 
 + Get a YO notification when a post on HN crosses 500 upvotes.
-+ Simple send a YO to "YOHACKERNEWS" and you will be subscribed.
-+ Appengine app(pull requests welcome)
++ Simply send a YO to "YOHACKERNEWS" and you will be subscribed.
++ Hosted on google app engine
++ Pull requests are welcome.

@@ -22,20 +22,25 @@ class Cron(webapp2.RequestHandler):
         instance.put()
 
     def get(self):
-        hn_url = 'http://hnify.herokuapp.com/get/top'
-        response = json.loads(urllib2.urlopen(hn_url).read())
-        try:
-            top = [i for i in response['stories'] if i['points'] > 500][0]
-        except IndexError:
-            return
-        if top:
-            print top['link']
+        top_stories_url = "https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty"
+        top_stories_json = json.loads(urllib2.urlopen(top_stories_url).read())
+        
+        for story_id in top_stories_json:
+            print story_id
+            story_url = "https://hacker-news.firebaseio.com/v0/item/%s.json?print=pretty"%story_id
+            story_json = json.loads(urllib2.urlopen(story_url).read())
+
             already_yoyed = [instance.url for instance in AlreadyYoyed.all().fetch(1000000)]
-            print already_yoyed
-            if top['link'] not in already_yoyed:
-                self.add_to_db(top['link'])
-                self.send_yo(top['link'])
-            
+            #print already_yoyed
+
+            if story_json['type'] == 'story' and story_json['score'] >= 300 and story_json['url'] not in already_yoyed:
+                #self.response.out.write(story_json)
+                self.add_to_db(story_json['url'])
+                self.send_yo(story_json['url'])
+                return
+    
+    
+
 application = webapp2.WSGIApplication([
     ('/cron', Cron)
     ],debug=True)

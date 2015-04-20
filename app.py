@@ -33,7 +33,7 @@ class Cron(webapp2.RequestHandler):
             already_yoyed = [instance.url for instance in AlreadyYoyed.all().fetch(1000000)]
             #print already_yoyed
 
-            if story_json['type'] == 'story' and story_json['score'] >= 300 and story_json['url'] not in already_yoyed:
+            if story_json['type'] == 'story' and story_json['score'] >= 700 and story_json['url'] not in already_yoyed:
                 #self.response.out.write(story_json)
                 self.add_to_db(story_json['url'])
                 self.send_yo(story_json['url'])
